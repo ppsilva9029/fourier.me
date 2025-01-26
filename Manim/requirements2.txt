@@ -1,0 +1,8 @@
+controlnet-aux==0.0.9
+matplotlib==3.10.0
+numpy==1.26.4
+opencv-contrib-python==4.11.0.86
+opencv-python==4.11.0.86
+mediapipe==0.10.20
+manim==0.18.0
+ffmpeg==1.4
