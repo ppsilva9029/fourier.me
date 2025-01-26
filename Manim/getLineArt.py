@@ -79,7 +79,7 @@ def get_lineart(image):
 
 
 if __name__ == "__main__":
-    imgName = "pi-symbol.png"  # "Robot.png"  "celeb1.jpeg"  "pi-symbol.png"
-    image = cv2.imread("../images/" + imgName)
+    imgName = "phmgd5x5.png"  # "Robot.png"  "celeb1.jpeg"  "pi-symbol.png"
+    image = cv2.imread(imgName)
     
     get_lineart(image)

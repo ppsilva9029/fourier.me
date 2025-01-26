@@ -5,23 +5,28 @@ from manim import (
     ORIGIN,
     WHITE,
     BLUE_D,
-    YELLOW_C,
+    YELLOW_D,
     TracedPath,
     VGroup,
     Arrow,
     Circle,
+    BLACK
 )
 from math import cos, sin
 import numpy as np
 from time import time
 
 # Parameters
-max_vectors = 175
+max_vectors = 480
 speed = 10
 play_time = -1
 min_rad = 0.5
 
 fps = config.frame_rate
+
+visibles = False
+circle_color = BLUE_D if visibles else BLACK
+arrow_color = WHITE if visibles else BLACK
 
 class Fourier_Epicycles(Scene):
     def __init__(self, arrow_dat, **kwargs):
@@ -59,10 +64,10 @@ class Fourier_Epicycles(Scene):
 
         dat = arrow_dat[0]
 
-        circ = Circle(radius=dat[0], color=BLUE_D)
+        circ = Circle(radius=dat[0], color=circle_color)
 
         rotArrow = Arrow(
-            start=ORIGIN, end=np.array([dat[2], dat[3], 0]), color=WHITE, buff=0
+            start=ORIGIN, end=np.array([dat[2], dat[3], 0]), color=arrow_color, buff=0
         )
         rotArrow.set(freq=dat[1])
         vg.add(circ, rotArrow)
@@ -76,7 +81,7 @@ class Fourier_Epicycles(Scene):
             dat = arrow_dat[i]
 
             if dat[0] > min_rad:
-                circ = Circle(radius=dat[0], color=BLUE_D).move_to(
+                circ = Circle(radius=dat[0], color=circle_color).move_to(
                     vg[prev_idx].get_end()
                 )
                 circ.set(idx=prev_idx)
@@ -87,7 +92,7 @@ class Fourier_Epicycles(Scene):
             rotArrow = Arrow(
                 start=vg[prev_idx].get_end(),
                 end=vg[prev_idx].get_end() + np.array([dat[2], dat[3], 0]),
-                color=WHITE,
+                color=arrow_color,
                 buff=0,
             )
             rotArrow.set(idx=prev_idx)
@@ -101,7 +106,7 @@ class Fourier_Epicycles(Scene):
                 )
             )
 
-        trace = TracedPath(vg[vgl - 1].get_end, stroke_width=10, stroke_color=YELLOW_C)
+        trace = TracedPath(vg[vgl - 1].get_end, stroke_width=10, stroke_color=YELLOW_D)
         vg.add(trace)
         self.add(ax, vg)
 
@@ -109,7 +114,8 @@ class Fourier_Epicycles(Scene):
             print("Animation Length:", play_time, "seconds")
             self.wait(play_time)
         else:
-            time_period = 2 * np.pi / (abs(arrow_dat[0][1]) * speed)
+
+            time_period = 2 * np.pi / (abs(arrow_dat[0][1]) * speed) +2
             print("Animation Length:", time_period, "seconds")
             self.wait(time_period)
 
@@ -117,7 +123,7 @@ class Fourier_Epicycles(Scene):
 
 
 if __name__ == "__main__":
-    imgName = "last"  #   "Robot.png"  "celeb1.jpeg"  "pi-symbol.png"
+    imgName = "cloud.svg"  #   "Robot.png"  "celeb1.jpeg"  "pi-symbol.png"
     arrow_dat = np.genfromtxt(
         "../arrow_data/arrow_dat_" + imgName + ".csv", delimiter=","
     )
